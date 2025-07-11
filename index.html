@@ -202,6 +202,34 @@
             transition: background-color 0.3s;
         }
         
+        /* Navigation Button Container */
+        .nav-button-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+        
+        .menu-nav-link {
+            background: rgba(255,255,255,0.2);
+            color: #FFD700;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid #FFD700;
+            display: inline-block;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .menu-nav-link:hover {
+            background: #FFD700;
+            color: #8B4513;
+            transform: translateY(-2px);
+        }
+        
         /* Mobile labels for inputs */
         .mobile-label {
             display: none;
@@ -209,6 +237,53 @@
             color: #666;
             margin-bottom: 5px;
             font-weight: bold;
+        }
+        
+        /* Quantity Controls */
+        .quantity-controls {
+            display: none;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .quantity-btn {
+            background: #D2691E;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .quantity-btn:hover {
+            background: #8B4513;
+            transform: scale(1.1);
+        }
+        
+        .quantity-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .quantity-display {
+            background: #f8f9fa;
+            border: 2px solid #D2691E;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #8B4513;
+            min-width: 60px;
+            text-align: center;
         }
 
         .pricing-selector {
@@ -424,10 +499,11 @@
             }
             
             /* Mobile Navigation Button */
-            .header div[style*="position: absolute"] {
+            .nav-button-container {
                 position: static !important;
                 text-align: center;
                 margin-bottom: 0;
+                order: 1;
             }
             
             .menu-nav-link {
@@ -440,9 +516,12 @@
                 line-height: 20px !important;
                 text-align: center !important;
                 box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+                -webkit-tap-highlight-color: transparent !important;
+                touch-action: manipulation !important;
             }
             
-            .menu-nav-link:hover {
+            .menu-nav-link:hover,
+            .menu-nav-link:active {
                 transform: translateY(-2px) !important;
                 box-shadow: 0 6px 20px rgba(0,0,0,0.3) !important;
             }
@@ -550,6 +629,31 @@
                  min-height: 50px !important;
                  box-sizing: border-box !important;
              }
+             
+             /* Mobile Quantity Controls */
+             .quantity-controls {
+                 display: flex !important;
+                 justify-content: center;
+                 margin: 15px 0;
+             }
+             
+             .item-input.item-quantity {
+                 display: none !important;
+             }
+             
+             .quantity-btn {
+                 width: 50px !important;
+                 height: 50px !important;
+                 font-size: 24px !important;
+                 -webkit-tap-highlight-color: transparent !important;
+                 touch-action: manipulation !important;
+             }
+             
+             .quantity-display {
+                 min-width: 80px !important;
+                 font-size: 20px !important;
+                 padding: 12px 20px !important;
+             }
             
                          .item-input:focus {
                  border-color: #D2691E !important;
@@ -648,8 +752,8 @@
 </head>
 <body>
     <div class="header">
-        <div style="position: absolute; top: 20px; right: 20px; z-index: 2;">
-            <a href="menu.html" class="menu-nav-link" style="background: rgba(255,255,255,0.2); color: #FFD700; padding: 10px 20px; border-radius: 25px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; border: 2px solid #FFD700;">
+        <div class="nav-button-container">
+            <a href="menu.html" class="menu-nav-link">
                 📋 View Full Menu
             </a>
         </div>
@@ -731,12 +835,22 @@
                     <div class="item-name">Pani Puri</div>
                     <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
                     <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="quantity-controls">
+                        <button type="button" class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                        <div class="quantity-display">0</div>
+                        <button type="button" class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
                     <div class="item-total">$0.00</div>
                 </div>
                 <div class="menu-item">
                     <div class="item-name">Samosa Chat/Papdi Chat</div>
                     <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
                     <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="quantity-controls">
+                        <button type="button" class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                        <div class="quantity-display">0</div>
+                        <button type="button" class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
                     <div class="item-total">$0.00</div>
                 </div>
                 <div class="menu-item">
@@ -837,6 +951,11 @@
                         </div>
                     </div>
                     <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="quantity-controls">
+                        <button type="button" class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                        <div class="quantity-display">0</div>
+                        <button type="button" class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
                     <div class="item-total">$0.00</div>
                 </div>
                 <div class="menu-item">
@@ -2263,6 +2382,55 @@
             
             calculateTotals();
         }
+        
+        // Mobile quantity control functions
+        function increaseQuantity(button) {
+            var quantityInput = button.parentElement.querySelector('.item-quantity');
+            var quantityDisplay = button.parentElement.querySelector('.quantity-display');
+            var currentValue = parseInt(quantityInput.value) || 0;
+            var newValue = currentValue + 1;
+            quantityInput.value = newValue;
+            quantityDisplay.textContent = newValue;
+            calculateTotals();
+        }
+        
+        function decreaseQuantity(button) {
+            var quantityInput = button.parentElement.querySelector('.item-quantity');
+            var quantityDisplay = button.parentElement.querySelector('.quantity-display');
+            var currentValue = parseInt(quantityInput.value) || 0;
+            var newValue = Math.max(0, currentValue - 1);
+            quantityInput.value = newValue;
+            quantityDisplay.textContent = newValue;
+            calculateTotals();
+        }
+        
+        // Initialize quantity displays and add controls to all items
+        function initializeQuantityControls() {
+            var quantityInputs = document.querySelectorAll('.item-quantity');
+            quantityInputs.forEach(function(input) {
+                var menuItem = input.closest('.menu-item');
+                var existingControls = menuItem.querySelector('.quantity-controls');
+                
+                // Add quantity controls if they don't exist
+                if (!existingControls) {
+                    var quantityControls = document.createElement('div');
+                    quantityControls.className = 'quantity-controls';
+                    quantityControls.innerHTML = 
+                        '<button type="button" class="quantity-btn" onclick="decreaseQuantity(this)">−</button>' +
+                        '<div class="quantity-display">0</div>' +
+                        '<button type="button" class="quantity-btn" onclick="increaseQuantity(this)">+</button>';
+                    
+                    // Insert after the quantity input
+                    input.parentNode.insertBefore(quantityControls, input.nextSibling);
+                }
+                
+                // Update display
+                var quantityDisplay = menuItem.querySelector('.quantity-display');
+                if (quantityDisplay) {
+                    quantityDisplay.textContent = input.value || '0';
+                }
+            });
+        }
 
         function calculateTotals() {
             // Get input values
@@ -2608,6 +2776,7 @@
 
         // Initialize
         calculateTotals();
+        initializeQuantityControls();
     </script>
 </body>
 </html>
