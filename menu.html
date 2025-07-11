@@ -289,20 +289,170 @@
         }
 
         @media (max-width: 768px) {
-            .menu-item, .price-header {
-                grid-template-columns: 1fr;
-                gap: 10px;
-                text-align: center;
+            .header {
+                padding: 20px 15px;
             }
             
+            .header h1 {
+                font-size: 2rem;
+                margin-bottom: 15px;
+            }
+            
+            .header p {
+                font-size: 1.1rem;
+                margin-bottom: 20px;
+            }
+            
+            /* Mobile Navigation Button */
             .nav-links {
                 position: static;
                 text-align: center;
+                margin-bottom: 0;
+                padding: 15px 0;
+            }
+            
+            .nav-link {
+                display: inline-block;
+                padding: 15px 25px;
+                font-size: 16px;
+                border-radius: 30px;
+                min-height: 50px;
+                line-height: 20px;
+                text-align: center;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                margin-top: 10px;
+            }
+            
+            .nav-link:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+            
+            /* Mobile Menu Categories */
+            .menu-category {
                 margin-bottom: 20px;
             }
-
-            .header h1 {
-                font-size: 2rem;
+            
+            .category-header {
+                padding: 20px 15px;
+                text-align: center;
+            }
+            
+            .category-title {
+                font-size: 1.3rem;
+            }
+            
+            /* Mobile Price Headers */
+            .price-header {
+                display: none; /* Hide on mobile for cleaner look */
+            }
+            
+            /* Mobile Menu Items */
+            .menu-item {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                text-align: left;
+                padding: 20px 15px;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .item-name {
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: 15px;
+                color: #8B4513;
+                padding-bottom: 10px;
+                border-bottom: 2px solid #D2691E;
+            }
+            
+            .item-price {
+                font-size: 16px;
+                font-weight: bold;
+                color: #D2691E;
+                background: #fff3cd;
+                padding: 8px 12px;
+                border-radius: 20px;
+                display: inline-block;
+                margin: 3px 5px 3px 0;
+                border: 1px solid #D2691E;
+            }
+            
+            /* Mobile Pricing Labels */
+            .menu-item .item-price:nth-child(2)::before {
+                content: "Per Person: ";
+                font-weight: normal;
+                color: #666;
+            }
+            
+            .menu-item .item-price:nth-child(3)::before {
+                content: "Small: ";
+                font-weight: normal;
+                color: #666;
+            }
+            
+            .menu-item .item-price:nth-child(4)::before {
+                content: "Half: ";
+                font-weight: normal;
+                color: #666;
+            }
+            
+            .menu-item .item-price:nth-child(5)::before {
+                content: "Large: ";
+                font-weight: normal;
+                color: #666;
+            }
+            
+            /* For items with only 4 columns (no per-person pricing) */
+            .menu-item .item-price:nth-child(2):not(:nth-last-child(3))::before {
+                content: "Small: ";
+            }
+            
+            .menu-item .item-price:nth-child(3):not(:nth-last-child(2))::before {
+                content: "Half: ";
+            }
+            
+            .menu-item .item-price:nth-child(4):last-child::before {
+                content: "Large: ";
+            }
+            
+            /* Mobile Menu Intro */
+            .menu-intro {
+                padding: 20px 15px;
+                text-align: center;
+            }
+            
+            .menu-intro h2 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+            
+            .menu-intro p {
+                font-size: 16px;
+                margin-bottom: 20px;
+            }
+            
+            .tray-sizes {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .tray-size {
+                padding: 15px;
+                text-align: center;
+            }
+            
+            .tray-size h4 {
+                font-size: 1.1rem;
+                margin-bottom: 8px;
+            }
+            
+            .tray-size p {
+                font-size: 14px;
+                line-height: 1.4;
             }
         }
 

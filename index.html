@@ -201,6 +201,15 @@
             align-items: center;
             transition: background-color 0.3s;
         }
+        
+        /* Mobile labels for inputs */
+        .mobile-label {
+            display: none;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
 
         .pricing-selector {
             display: flex;
@@ -400,26 +409,239 @@
         }
 
         @media (max-width: 768px) {
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+                margin-bottom: 15px;
+            }
+            
+            .header p {
+                font-size: 1.1rem;
+                margin-bottom: 20px;
+            }
+            
+            /* Mobile Navigation Button */
+            .header div[style*="position: absolute"] {
+                position: static !important;
+                text-align: center;
+                margin-bottom: 0;
+            }
+            
+            .menu-nav-link {
+                display: inline-block !important;
+                padding: 15px 25px !important;
+                font-size: 16px !important;
+                border-radius: 30px !important;
+                margin-top: 15px !important;
+                min-height: 50px !important;
+                line-height: 20px !important;
+                text-align: center !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+            }
+            
+            .menu-nav-link:hover {
+                transform: translateY(-2px) !important;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3) !important;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+            
+            /* Mobile Menu Items */
             .menu-item {
                 grid-template-columns: 1fr;
+                gap: 15px;
+                text-align: left;
+                padding: 20px 15px;
+            }
+            
+            .item-name {
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: 15px;
+                color: #8B4513;
+            }
+            
+            /* Mobile Pricing Selector */
+            .pricing-selector {
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                margin: 10px 0;
+                border: 1px solid #dee2e6;
+            }
+            
+            .pricing-type {
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+            
+            .pricing-type input[type="radio"] {
+                width: 20px;
+                height: 20px;
+                margin-right: 8px;
+            }
+            
+            .pricing-type label {
+                font-size: 16px;
+                font-weight: bold;
+                color: #8B4513;
+            }
+            
+            .per-person-pricing {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .tray-selector {
+                margin-top: 10px;
+            }
+            
+                         .tray-selector select {
+                 width: 100%;
+                 padding: 12px;
+                 font-size: 16px;
+                 border: 2px solid #ddd;
+                 border-radius: 8px;
+                 background: white;
+                 min-height: 50px;
+                 -webkit-appearance: none;
+                 -moz-appearance: none;
+                 appearance: none;
+                 background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+                 background-repeat: no-repeat;
+                 background-position: right 12px center;
+                 background-size: 16px;
+                 padding-right: 40px;
+             }
+             
+             .tray-selector select:focus {
+                 border-color: #D2691E;
+                 outline: none;
+             }
+             
+             .tray-selector.active {
+                 background: #e8f5e8;
+                 border-color: #28a745;
+             }
+            
+                         /* Mobile Input Fields */
+             .mobile-label {
+                 display: block;
+                 font-size: 14px;
+                 color: #666;
+                 margin-bottom: 5px;
+                 font-weight: bold;
+             }
+             
+             .item-input {
+                 width: 100% !important;
+                 padding: 12px !important;
+                 font-size: 16px !important;
+                 border: 2px solid #ddd !important;
+                 border-radius: 8px !important;
+                 margin: 5px 0 !important;
+                 min-height: 50px !important;
+                 box-sizing: border-box !important;
+             }
+            
+                         .item-input:focus {
+                 border-color: #D2691E !important;
+                 outline: none !important;
+                 box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.1) !important;
+             }
+             
+             /* Mobile Quantity Input Enhancement */
+             .item-input.item-quantity {
+                 text-align: center;
+                 font-weight: bold;
+                 background: #f8f9fa;
+             }
+             
+             .item-input.item-price {
+                 background: #fff3cd;
+             }
+            
+            .item-total {
+                font-size: 18px !important;
+                font-weight: bold !important;
+                color: #8B4513 !important;
+                background: #fff3cd !important;
+                padding: 10px !important;
+                border-radius: 8px !important;
+                text-align: center !important;
+                margin-top: 10px !important;
+            }
+            
+            /* Mobile Summary */
+            .summary-row {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+                padding: 15px;
+            }
+            
+            .summary-row span {
+                font-size: 16px;
+            }
+            
+            /* Mobile Form Groups */
+            .form-group input,
+            .form-group select {
+                padding: 12px;
+                font-size: 16px;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                min-height: 50px;
+            }
+            
+            .form-group input:focus,
+            .form-group select:focus {
+                border-color: #D2691E;
+                outline: none;
+            }
+            
+            /* Mobile Settings Grid */
+            .settings-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .event-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            /* Mobile Export Buttons */
+            .export-btn {
+                width: 100%;
+                margin-bottom: 10px;
+                padding: 15px;
+                font-size: 16px;
+                min-height: 50px;
+            }
+            
+            /* Mobile Section Headers */
+            .section-header {
+                padding: 20px 15px;
+                flex-direction: column;
                 gap: 10px;
                 text-align: center;
             }
             
-            .summary-row {
-                flex-direction: column;
-                gap: 5px;
-                text-align: center;
+            .section-title {
+                font-size: 1.2rem;
             }
-
-            .header div[style*="position: absolute"] {
-                position: static !important;
-                text-align: center;
-                margin-bottom: 20px;
-            }
-
-            .pricing-type {
-                justify-content: center;
+            
+            .section-total {
+                font-size: 1.1rem;
+                padding: 8px 15px;
             }
         }
     </style>
