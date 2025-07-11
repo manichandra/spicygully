@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spice Gully Catering - Menu & Pricing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2C1810, #4A2C17);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8B4513, #D2691E, #CD853F);
+            color: #FFD700;
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.4rem;
+            font-style: italic;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-links {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+        }
+
+        .nav-link {
+            background: rgba(255,255,255,0.2);
+            color: #FFD700;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid #FFD700;
+        }
+
+        .nav-link:hover {
+            background: #FFD700;
+            color: #8B4513;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .menu-intro {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #D2691E;
+            text-align: center;
+        }
+
+        .menu-intro h2 {
+            color: #8B4513;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .menu-intro p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .tray-sizes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tray-size {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #D2691E;
+            text-align: center;
+        }
+
+        .tray-size h4 {
+            color: #8B4513;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .tray-size p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .menu-category {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            overflow: hidden;
+            border: 2px solid #D2691E;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .menu-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #8B4513, #D2691E, #CD853F);
+            color: #FFD700;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .category-header:hover::before {
+            left: 100%;
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .menu-items {
+            padding: 0;
+        }
+
+        .menu-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 15px;
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .item-price {
+            text-align: center;
+            font-weight: bold;
+            color: #D2691E;
+            font-size: 1rem;
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .price-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 15px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #8B4513;
+            border-bottom: 2px solid #D2691E;
+        }
+
+        .price-header div {
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .contact-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+            margin: 30px 0;
+            overflow: hidden;
+            border: 2px solid #D2691E;
+        }
+
+        .contact-header {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: #FFD700;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .contact-header h3 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-item span {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .tagline {
+            margin-top: 20px;
+            font-style: italic;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .menu-item, .price-header {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .nav-links {
+                position: static;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .menu-item, .price-header {
+                grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+                gap: 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">← Back to Quote Calculator</a>
+        </div>
+        <h1>🍛 Spice Gully Catering</h1>
+        <p>Complete Menu & Pricing Guide</p>
+    </div>
+
+    <div class="container">
+        <!-- Menu Introduction -->
+        <div class="menu-intro">
+            <h2>Our Signature Dishes Capture The True Flavors of India</h2>
+            <p>Custom requests are always welcome. Pricing varies by category:</p>
+            
+            <div class="tray-sizes">
+                <div class="tray-size">
+                    <h4>Per Person Items</h4>
+                    <p>Breads, Live Stations, Desserts, Drinks, Ice Creams</p>
+                </div>
+                <div class="tray-size">
+                    <h4>Tray Options</h4>
+                    <p>Appetizers & Entrees: Small (10-15) | Half (15-25) | Large (25-40)</p>
+                </div>
+                <div class="tray-size">
+                    <h4>Flexible Pricing</h4>
+                    <p>Mix and match to create your perfect event menu</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biryanis -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🍚 BIRYANIS</div>
+            </div>
+            <div class="price-header">
+                <div>Dish Name</div>
+                <div>Small Tray</div>
+                <div>Half Tray</div>
+                <div>Large Tray</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Hyderabadi Dum Biryani (Veg)</div>
+                    <div class="item-price">$55</div>
+                    <div class="item-price">$80</div>
+                    <div class="item-price">$120</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Hyderabadi Dum Biryani (Chicken)</div>
+                    <div class="item-price">$65</div>
+                    <div class="item-price">$95</div>
+                    <div class="item-price">$145</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Hyderabadi Dum Biryani (Goat)</div>
+                    <div class="item-price">$75</div>
+                    <div class="item-price">$110</div>
+                    <div class="item-price">$165</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Thalapakattu Biryani (Chicken)</div>
+                    <div class="item-price">$75</div>
+                    <div class="item-price">$110</div>
+                    <div class="item-price">$165</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Thalapakattu Biryani (Goat)</div>
+                    <div class="item-price">$85</div>
+                    <div class="item-price">$125</div>
+                    <div class="item-price">$185</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rice/Pulao -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🍚 RICE/PULAO</div>
+            </div>
+            <div class="price-header">
+                <div>Dish Name</div>
+                <div>Small Tray</div>
+                <div>Half Tray</div>
+                <div>Large Tray</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Lemon Rice</div>
+                    <div class="item-price">$35</div>
+                    <div class="item-price">$55</div>
+                    <div class="item-price">$85</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Tamarind Rice (Pulihora)</div>
+                    <div class="item-price">$40</div>
+                    <div class="item-price">$60</div>
+                    <div class="item-price">$90</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Pongal</div>
+                    <div class="item-price">$45</div>
+                    <div class="item-price">$65</div>
+                    <div class="item-price">$95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Curd Rice</div>
+                    <div class="item-price">$30</div>
+                    <div class="item-price">$45</div>
+                    <div class="item-price">$70</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Vegetable Pulao</div>
+                    <div class="item-price">$40</div>
+                    <div class="item-price">$60</div>
+                    <div class="item-price">$90</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chicken Pulao</div>
+                    <div class="item-price">$55</div>
+                    <div class="item-price">$80</div>
+                    <div class="item-price">$120</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Goat Pulao</div>
+                    <div class="item-price">$65</div>
+                    <div class="item-price">$95</div>
+                    <div class="item-price">$145</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Veg Entrees -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🥬 VEG ENTREES</div>
+            </div>
+            <div class="price-header">
+                <div>Dish Name</div>
+                <div>Per Person</div>
+                <div>Small Tray</div>
+                <div>Half Tray</div>
+                <div>Large Tray</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Bhagara Bhaigan</div>
+                    <div class="item-price">$4.50</div>
+                    <div class="item-price">$45</div>
+                    <div class="item-price">$65</div>
+                    <div class="item-price">$95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Paneer Tikka Masala</div>
+                    <div class="item-price">$5.50</div>
+                    <div class="item-price">$55</div>
+                    <div class="item-price">$80</div>
+                    <div class="item-price">$120</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Palak Paneer</div>
+                    <div class="item-price">$5.00</div>
+                    <div class="item-price">$50</div>
+                    <div class="item-price">$75</div>
+                    <div class="item-price">$110</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Hyderabadi Mirchi Ka Salan</div>
+                    <div class="item-price">$4.00</div>
+                    <div class="item-price">$40</div>
+                    <div class="item-price">$60</div>
+                    <div class="item-price">$90</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chana Masala</div>
+                    <div class="item-price">$3.50</div>
+                    <div class="item-price">$35</div>
+                    <div class="item-price">$55</div>
+                    <div class="item-price">$85</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chana Palak</div>
+                    <div class="item-price">$4.00</div>
+                    <div class="item-price">$40</div>
+                    <div class="item-price">$60</div>
+                    <div class="item-price">$90</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Daal/Sambaar</div>
+                    <div class="item-price">$3.00</div>
+                    <div class="item-price">$30</div>
+                    <div class="item-price">$45</div>
+                    <div class="item-price">$70</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Non-Veg Entrees -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🍖 NON VEG ENTREES</div>
+            </div>
+            <div class="price-header">
+                <div>Dish Name</div>
+                <div>Per Person</div>
+                <div>Small Tray</div>
+                <div>Half Tray</div>
+                <div>Large Tray</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Nawabi Chicken Curry</div>
+                    <div class="item-price">$6.50</div>
+                    <div class="item-price">$65</div>
+                    <div class="item-price">$95</div>
+                    <div class="item-price">$145</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Mutton Masala</div>
+                    <div class="item-price">$7.50</div>
+                    <div class="item-price">$75</div>
+                    <div class="item-price">$110</div>
+                    <div class="item-price">$165</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Coorg Chicken</div>
+                    <div class="item-price">$6.00</div>
+                    <div class="item-price">$60</div>
+                    <div class="item-price">$90</div>
+                    <div class="item-price">$135</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Afghani Egg</div>
+                    <div class="item-price">$4.50</div>
+                    <div class="item-price">$45</div>
+                    <div class="item-price">$65</div>
+                    <div class="item-price">$95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Andhra Fish Curry</div>
+                    <div class="item-price">$7.00</div>
+                    <div class="item-price">$70</div>
+                    <div class="item-price">$105</div>
+                    <div class="item-price">$155</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Breads -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🍞 BREADS</div>
+            </div>
+            <div class="price-header" style="grid-template-columns: 2fr 1fr;">
+                <div>Dish Name</div>
+                <div>Per Person</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Chapati</div>
+                    <div class="item-price">$1.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Butter Naan</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Garlic Naan</div>
+                    <div class="item-price">$3.00</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Chilli Garlic Naan</div>
+                    <div class="item-price">$3.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Puri</div>
+                    <div class="item-price">$1.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Stations -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🔥 LIVE STATIONS</div>
+            </div>
+            <div class="price-header" style="grid-template-columns: 2fr 1fr;">
+                <div>Dish Name</div>
+                <div>Per Person</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Pani Puri</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Samosa Chat/Papdi Chat</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Vada Pav/Pav Bhaji</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Masala Idli/Chilli Idli</div>
+                    <div class="item-price">$2.00</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Bhel Puri</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Pasta Alfredo</div>
+                    <div class="item-price">$4.00</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Pasta Marinara</div>
+                    <div class="item-price">$3.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Pasta Tikka Masala</div>
+                    <div class="item-price">$4.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Falooda</div>
+                    <div class="item-price">$3.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Masala Dosa</div>
+                    <div class="item-price">$3.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Onion Dosa</div>
+                    <div class="item-price">$3.00</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Nutella Dosa</div>
+                    <div class="item-price">$4.00</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Paneer Kathi Roll</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Chicken Kathi Roll</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Roti Pe Boti (Mutton Roast)</div>
+                    <div class="item-price">$3.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Street Style Corn Mixture</div>
+                    <div class="item-price">$2.00</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Street Style Chana Mixture</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Sugarcane Juice (Live)</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Mint Cooler (2 flavors)</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Indo-Chinese -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🥢 INDO-CHINESE</div>
+            </div>
+            <div class="price-header">
+                <div>Dish Name</div>
+                <div>Per Person</div>
+                <div>Small Tray</div>
+                <div>Half Tray</div>
+                <div>Large Tray</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Veg Manchurian Gravy</div>
+                    <div class="item-price">$4.50</div>
+                    <div class="item-price">$45</div>
+                    <div class="item-price">$65</div>
+                    <div class="item-price">$95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Veg Fried Rice</div>
+                    <div class="item-price">$5.00</div>
+                    <div class="item-price">$50</div>
+                    <div class="item-price">$75</div>
+                    <div class="item-price">$110</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chicken Fried Rice</div>
+                    <div class="item-price">$6.00</div>
+                    <div class="item-price">$60</div>
+                    <div class="item-price">$90</div>
+                    <div class="item-price">$135</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Egg Hakka Noodles</div>
+                    <div class="item-price">$4.50</div>
+                    <div class="item-price">$45</div>
+                    <div class="item-price">$65</div>
+                    <div class="item-price">$95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chicken Manchurian</div>
+                    <div class="item-price">$5.50</div>
+                    <div class="item-price">$55</div>
+                    <div class="item-price">$80</div>
+                    <div class="item-price">$120</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Garlic Bread/Herbs & Toppings</div>
+                    <div class="item-price">$2.50</div>
+                    <div class="item-price">$25</div>
+                    <div class="item-price">$40</div>
+                    <div class="item-price">$60</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Veg Appetizers -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🥗 VEG APPETIZERS</div>
+            </div>
+            <div class="price-header">
+                <div>Dish Name</div>
+                <div>Per Person</div>
+                <div>Small Tray</div>
+                <div>Half Tray</div>
+                <div>Large Tray</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Veg Manchuria</div>
+                    <div class="item-price">$3.50</div>
+                    <div class="item-price">$35</div>
+                    <div class="item-price">$55</div>
+                    <div class="item-price">$85</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Gobi Manchuria</div>
+                    <div class="item-price">$4.00</div>
+                    <div class="item-price">$40</div>
+                    <div class="item-price">$60</div>
+                    <div class="item-price">$90</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Paneer Manchuria</div>
+                    <div class="item-price">$5.00</div>
+                    <div class="item-price">$50</div>
+                    <div class="item-price">$75</div>
+                    <div class="item-price">$110</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Corn Manchuria</div>
+                    <div class="item-price">$3.50</div>
+                    <div class="item-price">$35</div>
+                    <div class="item-price">$55</div>
+                    <div class="item-price">$85</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Schezwan Paneer</div>
+                    <div class="item-price">$5.00</div>
+                    <div class="item-price">$50</div>
+                    <div class="item-price">$75</div>
+                    <div class="item-price">$110</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Paneer Kabob</div>
+                    <div class="item-price">$5.50</div>
+                    <div class="item-price">$55</div>
+                    <div class="item-price">$80</div>
+                    <div class="item-price">$120</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Karkar Okra</div>
+                    <div class="item-price">$3.50</div>
+                    <div class="item-price">$35</div>
+                    <div class="item-price">$55</div>
+                    <div class="item-price">$85</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Gobi 555</div>
+                    <div class="item-price">$4.00</div>
+                    <div class="item-price">$40</div>
+                    <div class="item-price">$60</div>
+                    <div class="item-price">$90</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Non-Veg Appetizers -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🍗 NON VEG APPETIZERS</div>
+            </div>
+            <div class="price-header">
+                <div>Dish Name</div>
+                <div>Per Person</div>
+                <div>Small Tray</div>
+                <div>Half Tray</div>
+                <div>Large Tray</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Chicken Sukka</div>
+                    <div class="item-price">$6.00</div>
+                    <div class="item-price">$60</div>
+                    <div class="item-price">$90</div>
+                    <div class="item-price">$135</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Goat Sukka</div>
+                    <div class="item-price">$7.00</div>
+                    <div class="item-price">$70</div>
+                    <div class="item-price">$105</div>
+                    <div class="item-price">$155</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chicken 555</div>
+                    <div class="item-price">$6.00</div>
+                    <div class="item-price">$60</div>
+                    <div class="item-price">$90</div>
+                    <div class="item-price">$135</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Amritsari Fish</div>
+                    <div class="item-price">$7.00</div>
+                    <div class="item-price">$70</div>
+                    <div class="item-price">$105</div>
+                    <div class="item-price">$155</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Hyderabadi Chicken 65</div>
+                    <div class="item-price">$6.50</div>
+                    <div class="item-price">$65</div>
+                    <div class="item-price">$95</div>
+                    <div class="item-price">$145</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chicken Haleem</div>
+                    <div class="item-price">$7.00</div>
+                    <div class="item-price">$70</div>
+                    <div class="item-price">$105</div>
+                    <div class="item-price">$155</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Goat Haleem</div>
+                    <div class="item-price">$8.00</div>
+                    <div class="item-price">$80</div>
+                    <div class="item-price">$120</div>
+                    <div class="item-price">$175</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- On The Grill -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🔥 ON THE GRILL</div>
+            </div>
+            <div class="price-header">
+                <div>Dish Name</div>
+                <div>Small Tray</div>
+                <div>Half Tray</div>
+                <div>Large Tray</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Chicken Tandoori</div>
+                    <div class="item-price">$70</div>
+                    <div class="item-price">$105</div>
+                    <div class="item-price">$155</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chicken Tikka Kabob</div>
+                    <div class="item-price">$65</div>
+                    <div class="item-price">$95</div>
+                    <div class="item-price">$145</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Haryali Chicken</div>
+                    <div class="item-price">$65</div>
+                    <div class="item-price">$95</div>
+                    <div class="item-price">$145</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chicken Reshmi Kabob</div>
+                    <div class="item-price">$70</div>
+                    <div class="item-price">$105</div>
+                    <div class="item-price">$155</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Lamb Chops</div>
+                    <div class="item-price">$85</div>
+                    <div class="item-price">$125</div>
+                    <div class="item-price">$185</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desserts -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🍰 DESSERTS</div>
+            </div>
+            <div class="price-header" style="grid-template-columns: 2fr 1fr;">
+                <div>Dish Name</div>
+                <div>Per Person</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Gulab Jamoon with Ice Cream</div>
+                    <div class="item-price">$3.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Rasmalai</div>
+                    <div class="item-price">$3.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Kaddu Ka Kheer</div>
+                    <div class="item-price">$3.00</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Gajar Ka Halwa</div>
+                    <div class="item-price">$3.00</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Hyderabadi Sheer Khurma</div>
+                    <div class="item-price">$3.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Jalebi</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Salt/Sweet/Mango/Rose Lassi</div>
+                    <div class="item-price">$3.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Drinks -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🥤 DRINKS</div>
+            </div>
+            <div class="price-header" style="grid-template-columns: 2fr 1fr;">
+                <div>Dish Name</div>
+                <div>Per Person</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Water Melon Refresher</div>
+                    <div class="item-price">$3.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Spicy Guava</div>
+                    <div class="item-price">$3.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Mango Mule</div>
+                    <div class="item-price">$4.00</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Cucumber-Mint Cooler</div>
+                    <div class="item-price">$3.00</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Lime-Mint Cooler</div>
+                    <div class="item-price">$3.00</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Nimboo Soda</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ice Creams -->
+        <div class="menu-category">
+            <div class="category-header">
+                <div class="category-title">🍦 ICE CREAMS</div>
+            </div>
+            <div class="price-header" style="grid-template-columns: 2fr 1fr;">
+                <div>Dish Name</div>
+                <div>Per Person</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Vanilla</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Chocolate</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item" style="grid-template-columns: 2fr 1fr;">
+                    <div class="item-name">Strawberry</div>
+                    <div class="item-price">$2.50</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <div class="contact-header">
+                <h3>📞 Contact Us for Orders & Custom Requests</h3>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span>📱</span>
+                        <span>+1 (510) 331-1812</span>
+                    </div>
+                    <div class="contact-item">
+                        <span>📞</span>
+                        <span>+1 (571) 440-7784</span>
+                    </div>
+                </div>
+                <div class="tagline">"For All Events & Celebrations"</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

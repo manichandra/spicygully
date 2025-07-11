@@ -1,0 +1,2391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spice Gully Catering - Pricing Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2C1810, #4A2C17);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8B4513, #D2691E, #CD853F);
+            color: #FFD700;
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.4rem;
+            font-style: italic;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+            margin-bottom: 25px;
+            overflow: hidden;
+            border: 2px solid #D2691E;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .event-info {
+            padding: 25px;
+            background: #f8f9fa;
+            border-bottom: 3px solid #D2691E;
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #8B4513;
+        }
+
+        .form-group input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #D2691E;
+        }
+
+        .settings-panel {
+            padding: 25px;
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-left: 5px solid #D2691E;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-section {
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .menu-section:hover {
+            transform: translateY(-2px);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #8B4513, #D2691E, #CD853F);
+            color: #FFD700;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .section-header:hover::before {
+            left: 100%;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-total {
+            background: rgba(255,215,0,0.2);
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border: 2px solid #FFD700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-items {
+            padding: 0;
+        }
+
+        .menu-item {
+            display: grid;
+            grid-template-columns: 2fr 180px 120px 100px 140px;
+            gap: 15px;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .pricing-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .pricing-type {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .pricing-type input[type="radio"] {
+            margin: 0;
+            width: auto;
+        }
+
+        .pricing-type label {
+            font-size: 12px;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .tray-selector {
+            display: none;
+        }
+
+        .tray-selector.active {
+            display: block;
+        }
+
+        .tray-selector select {
+            padding: 5px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            width: 100%;
+        }
+
+        .per-person-pricing {
+            display: block;
+        }
+
+        .per-person-pricing input {
+            width: 100%;
+        }
+
+        .pricing-selector {
+            min-width: 160px;
+        }
+
+        .menu-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .item-input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .item-input:focus {
+            outline: none;
+            border-color: #D2691E;
+        }
+
+        .item-total {
+            font-weight: bold;
+            color: #D2691E;
+            text-align: center;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border: 3px solid #8B4513;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .summary-title {
+            color: #8B4513;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            font-size: 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-row.highlight {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .summary-row.total {
+            background: #8B4513;
+            color: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .balance-section {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid #28a745;
+        }
+
+        .payment-terms {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #D2691E;
+            margin-top: 30px;
+        }
+
+        .terms-title {
+            color: #8B4513;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .export-panel {
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+            padding: 30px;
+            text-align: center;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .export-btn.pdf {
+            background: linear-gradient(135deg, #D2691E, #8B4513);
+        }
+
+        .menu-nav-link:hover {
+            background: #FFD700 !important;
+            color: #8B4513 !important;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .menu-item {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .summary-row {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+            }
+
+            .header div[style*="position: absolute"] {
+                position: static !important;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .pricing-type {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div style="position: absolute; top: 20px; right: 20px; z-index: 2;">
+            <a href="menu.html" class="menu-nav-link" style="background: rgba(255,255,255,0.2); color: #FFD700; padding: 10px 20px; border-radius: 25px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; border: 2px solid #FFD700;">
+                📋 View Full Menu
+            </a>
+        </div>
+        <h1>🍛 Spice Gully Catering</h1>
+        <p>Authentic Indian Food - Live Catering</p>
+    </div>
+
+    <div class="container">
+        <!-- Event Information -->
+        <div class="card">
+            <div class="event-info">
+                <h2 style="color: #8B4513; margin-bottom: 20px;">📋 Event Details</h2>
+                <div class="event-grid">
+                    <div class="form-group">
+                        <label>Client Name</label>
+                        <input type="text" id="clientName" placeholder="Enter client name">
+                    </div>
+                    <div class="form-group">
+                        <label>Event Type</label>
+                        <input type="text" id="eventType" placeholder="Birthday, Wedding, etc.">
+                    </div>
+                    <div class="form-group">
+                        <label>Event Date</label>
+                        <input type="date" id="eventDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Guests</label>
+                        <input type="number" id="guestCount" value="50" min="1" onchange="calculateTotals()">
+                        <small style="color: #666; font-style: italic; margin-top: 5px;">
+                            💡 Pricing adjusts based on guest count:<br>
+                            • &lt;35 guests: +40% • 35-70 guests: +20% • 71-120 guests: +10% • 120+ guests: Base rate
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Panel -->
+        <div class="card">
+            <div class="settings-panel">
+                <h3 style="color: #8B4513; margin-bottom: 20px;">⚙️ Pricing Settings</h3>
+                <div class="settings-grid">
+                    <div class="form-group">
+                        <label>Tax Rate (%)</label>
+                        <input type="number" id="taxRate" value="7.75" step="0.01" onchange="calculateTotals()">
+                    </div>
+                    <div class="form-group">
+                        <label>Cash Discount (%)</label>
+                        <input type="number" id="cashDiscount" value="3" step="0.01" onchange="calculateTotals()">
+                    </div>
+                    <div class="form-group">
+                        <label>Staff Count</label>
+                        <input type="number" id="staffCount" value="7" min="0" onchange="calculateTotals()">
+                    </div>
+                    <div class="form-group">
+                        <label>Hours per Staff</label>
+                        <input type="number" id="hoursPerStaff" value="8" min="0" onchange="calculateTotals()">
+                    </div>
+                    <div class="form-group">
+                        <label>Hourly Rate ($)</label>
+                        <input type="number" id="hourlyRate" value="30" step="1" onchange="calculateTotals()">
+                    </div>
+                    <div class="form-group">
+                        <label>Advance Paid ($)</label>
+                        <input type="number" id="advancePaid" value="0" step="1" onchange="calculateTotals()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Stations -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🔥 Live Stations</div>
+                <div class="section-total" id="liveStationsTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Pani Puri</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Samosa Chat/Papdi Chat</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Vada Pav/Pav Bhaji</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Masala Idli/Chilli Idli</div>
+                    <input type="number" class="item-input item-price" value="2.00" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Bhel Puri</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Pasta (Alfredo/Pesto)</div>
+                    <input type="number" class="item-input item-price" value="4.00" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Veg/Chicken Tacos (Live)</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Veg/Chicken Bao Buns</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Sushi Rolls (Veg/Chicken)</div>
+                    <input type="number" class="item-input item-price" value="3.00" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Dosa (Masala/Onion/Nutella)</div>
+                    <input type="number" class="item-input item-price" value="3.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Kathi Roll (Paneer/Chicken)</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Sugarcane Juice (Live)</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Mint Cooler (2 flavors)</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Indo-Chinese -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🥢 Indo-Chinese</div>
+                <div class="section-total" id="indoChineseTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Veg Manchurian Gravy</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="vegManchurianGravy_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="vegManchurianGravy_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="3.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="30">Small Tray ($30)</option>
+                                <option value="45">Half Tray ($45)</option>
+                                <option value="65">Large Tray ($65)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Veg/Chicken Fried Rice</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="vegChickenFriedRice_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="vegChickenFriedRice_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="4.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="40">Small Tray ($40)</option>
+                                <option value="60">Half Tray ($60)</option>
+                                <option value="90">Large Tray ($90)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Egg Hakka Noodles</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="eggHakkaNoodles_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="eggHakkaNoodles_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="25">Small Tray ($25)</option>
+                                <option value="40">Half Tray ($40)</option>
+                                <option value="55">Large Tray ($55)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chicken Manchurian</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="chickenManchurian_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="chickenManchurian_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="3.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="35">Small Tray ($35)</option>
+                                <option value="55">Half Tray ($55)</option>
+                                <option value="80">Large Tray ($80)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Garlic Bread/Herbs & Toppings</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="garlicBread_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="garlicBread_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="1.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="10">Small Tray ($10)</option>
+                                <option value="15">Half Tray ($15)</option>
+                                <option value="22">Large Tray ($22)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Veg Appetizers -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🥗 Veg Appetizers</div>
+                <div class="section-total" id="vegAppetizersTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Veg Manchuria</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="vegManchuria_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="vegManchuria_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="3.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="35">Small Tray ($35)</option>
+                                <option value="55">Half Tray ($55)</option>
+                                <option value="85">Large Tray ($85)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Gobi Manchuria</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="gobiManchuria_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="gobiManchuria_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="4.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="40">Small Tray ($40)</option>
+                                <option value="60">Half Tray ($60)</option>
+                                <option value="90">Large Tray ($90)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Paneer Manchuria</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="paneerManchuria_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="paneerManchuria_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="5.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="50">Small Tray ($50)</option>
+                                <option value="75">Half Tray ($75)</option>
+                                <option value="110">Large Tray ($110)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Schezwan Paneer</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="schezwanPaneer_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="schezwanPaneer_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="5.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="50">Small Tray ($50)</option>
+                                <option value="75">Half Tray ($75)</option>
+                                <option value="110">Large Tray ($110)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Paneer Kabob</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="paneerKabob_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="paneerKabob_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="5.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="55">Small Tray ($55)</option>
+                                <option value="80">Half Tray ($80)</option>
+                                <option value="120">Large Tray ($120)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Karkar Okra</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="karkarOkra_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="karkarOkra_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="3.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="35">Small Tray ($35)</option>
+                                <option value="55">Half Tray ($55)</option>
+                                <option value="85">Large Tray ($85)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Gobi 555</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="gobi555_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="gobi555_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="4.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="40">Small Tray ($40)</option>
+                                <option value="60">Half Tray ($60)</option>
+                                <option value="90">Large Tray ($90)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Non-Veg Appetizers -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🍗 Non-Veg Appetizers</div>
+                <div class="section-total" id="nonVegAppetizersTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Chicken/Goat Sukka</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="chickenGoatSukka_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="chickenGoatSukka_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="6.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="65">Small Tray ($65)</option>
+                                <option value="95">Half Tray ($95)</option>
+                                <option value="145">Large Tray ($145)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chicken 555</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="chicken555_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="chicken555_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="6.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="60">Small Tray ($60)</option>
+                                <option value="90">Half Tray ($90)</option>
+                                <option value="135">Large Tray ($135)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Amritsari Fish</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="amritsariFish_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="amritsariFish_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="7.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="70">Small Tray ($70)</option>
+                                <option value="105">Half Tray ($105)</option>
+                                <option value="155">Large Tray ($155)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Hyderabadi Chicken 65</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="hyderabadiChicken65_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="hyderabadiChicken65_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="6.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="65">Small Tray ($65)</option>
+                                <option value="95">Half Tray ($95)</option>
+                                <option value="145">Large Tray ($145)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Haleem (Chicken/Goat)</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="haleem_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="haleem_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="8.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="80">Small Tray ($80)</option>
+                                <option value="120">Half Tray ($120)</option>
+                                <option value="175">Large Tray ($175)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biryanis -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🍚 Biryanis</div>
+                <div class="section-total" id="biryanisTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Hyderabadi Dum Biryani (Veg/Chicken/Goat)</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="hyderabadiBiryani_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="hyderabadiBiryani_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="7.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="75">Small Tray ($75)</option>
+                                <option value="115">Half Tray ($115)</option>
+                                <option value="165">Large Tray ($165)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Thalapakattu Biryani (Chicken/Goat)</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="thalapakattuBiryani_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="thalapakattuBiryani_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="8.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="80">Small Tray ($80)</option>
+                                <option value="120">Half Tray ($120)</option>
+                                <option value="175">Large Tray ($175)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Breads -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🍞 Breads</div>
+                <div class="section-total" id="breadsTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Chapati</div>
+                    <input type="number" class="item-input item-price" value="1.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Butter Naan</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Garlic Naan</div>
+                    <input type="number" class="item-input item-price" value="3.00" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chilli Garlic Naan</div>
+                    <input type="number" class="item-input item-price" value="3.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Puri</div>
+                    <input type="number" class="item-input item-price" value="1.00" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Veg Entrees -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🥬 Veg Entrees</div>
+                <div class="section-total" id="vegEntreesTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Bhagara Bhaigan</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="bhagaraBhaigan_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="bhagaraBhaigan_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="8.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="80">Small Tray ($80)</option>
+                                <option value="120">Half Tray ($120)</option>
+                                <option value="175">Large Tray ($175)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Paneer Tikka Masala</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="paneerTikkaMasala_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="paneerTikkaMasala_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="9.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="95">Small Tray ($95)</option>
+                                <option value="145">Half Tray ($145)</option>
+                                <option value="210">Large Tray ($210)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Palak Paneer</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="palakPaneer_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="palakPaneer_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="8.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="85">Small Tray ($85)</option>
+                                <option value="130">Half Tray ($130)</option>
+                                <option value="185">Large Tray ($185)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Hyderabadi Mirchi Ka Salan</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="mirchiKaSalan_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="mirchiKaSalan_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="7.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="75">Small Tray ($75)</option>
+                                <option value="115">Half Tray ($115)</option>
+                                <option value="165">Large Tray ($165)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chana Masala</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="chanaMasala_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="chanaMasala_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="7.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="70">Small Tray ($70)</option>
+                                <option value="105">Half Tray ($105)</option>
+                                <option value="155">Large Tray ($155)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chana Palak</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="chanaPalak_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="chanaPalak_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="7.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="75">Small Tray ($75)</option>
+                                <option value="115">Half Tray ($115)</option>
+                                <option value="165">Large Tray ($165)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Daal/Sambaar</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="daalSambaar_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="daalSambaar_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="6.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="65">Small Tray ($65)</option>
+                                <option value="95">Half Tray ($95)</option>
+                                <option value="145">Large Tray ($145)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rice/Pulao -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🍚 Rice/Pulao</div>
+                <div class="section-total" id="ricePulaoTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Lemon Rice</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="lemonRice_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="lemonRice_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="5.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="50">Small Tray ($50)</option>
+                                <option value="75">Half Tray ($75)</option>
+                                <option value="110">Large Tray ($110)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Tamarind Rice (Pulihora)</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="tamarindRice_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="tamarindRice_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="5.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="55">Small Tray ($55)</option>
+                                <option value="85">Half Tray ($85)</option>
+                                <option value="120">Large Tray ($120)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Pongal</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="pongal_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="pongal_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="6.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="60">Small Tray ($60)</option>
+                                <option value="90">Half Tray ($90)</option>
+                                <option value="135">Large Tray ($135)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Curd Rice</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="curdRice_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="curdRice_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="4.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="45">Small Tray ($45)</option>
+                                <option value="70">Half Tray ($70)</option>
+                                <option value="100">Large Tray ($100)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Vegetable Pulao</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="vegPulao_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="vegPulao_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="6.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="65">Small Tray ($65)</option>
+                                <option value="95">Half Tray ($95)</option>
+                                <option value="145">Large Tray ($145)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chicken/Goat Pulao</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="chickenGoatPulao_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="chickenGoatPulao_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="8.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="85">Small Tray ($85)</option>
+                                <option value="130">Half Tray ($130)</option>
+                                <option value="185">Large Tray ($185)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Non-Veg Entrees -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🍖 Non-Veg Entrees</div>
+                <div class="section-total" id="nonVegEntreesTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Nawabi Chicken Curry</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="nawabiChicken_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="nawabiChicken_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="10.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="105">Small Tray ($105)</option>
+                                <option value="160">Half Tray ($160)</option>
+                                <option value="235">Large Tray ($235)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Mutton Masala</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="muttonMasala_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="muttonMasala_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="12.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="120">Small Tray ($120)</option>
+                                <option value="180">Half Tray ($180)</option>
+                                <option value="265">Large Tray ($265)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Coorg Chicken</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="coorgChicken_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="coorgChicken_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="11.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="110">Small Tray ($110)</option>
+                                <option value="165">Half Tray ($165)</option>
+                                <option value="245">Large Tray ($245)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Afghani Egg</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="afghaniEgg_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="afghaniEgg_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="8.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="85">Small Tray ($85)</option>
+                                <option value="130">Half Tray ($130)</option>
+                                <option value="185">Large Tray ($185)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Andhra Fish Curry</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="andhraFish_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="andhraFish_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="11.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="115">Small Tray ($115)</option>
+                                <option value="175">Half Tray ($175)</option>
+                                <option value="255">Large Tray ($255)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kebab Station -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🔥 Kebab Station</div>
+                <div class="section-total" id="onTheGrillTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Chicken Tikka Kebab</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="chickenTikkaKebab_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="chickenTikkaKebab_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="25">Small Tray ($25)</option>
+                                <option value="40">Half Tray ($40)</option>
+                                <option value="55">Large Tray ($55)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chicken Hariyali Kebab</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="chickenHariyaliKebab_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="chickenHariyaliKebab_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="25">Small Tray ($25)</option>
+                                <option value="40">Half Tray ($40)</option>
+                                <option value="55">Large Tray ($55)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Paneer Tikka Kebab</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="paneerTikkaKebab_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="paneerTikkaKebab_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="25">Small Tray ($25)</option>
+                                <option value="40">Half Tray ($40)</option>
+                                <option value="55">Large Tray ($55)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Mutton Kebab</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="muttonKebab_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="muttonKebab_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="3.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="30">Small Tray ($30)</option>
+                                <option value="45">Half Tray ($45)</option>
+                                <option value="65">Large Tray ($65)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Grilled Vegetables</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="grilledVegetables_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="grilledVegetables_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="2.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="20">Small Tray ($20)</option>
+                                <option value="30">Half Tray ($30)</option>
+                                <option value="45">Large Tray ($45)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Grilled Chicken</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="grilledChicken_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="grilledChicken_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="25">Small Tray ($25)</option>
+                                <option value="40">Half Tray ($40)</option>
+                                <option value="55">Large Tray ($55)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desserts -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🍰 Desserts</div>
+                <div class="section-total" id="dessertsTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Fruit Custard in Shot Glasses</div>
+                    <input type="number" class="item-input item-price" value="3.00" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Kalakand in Mini Dishes</div>
+                    <input type="number" class="item-input item-price" value="3.00" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Gulab Jamoon with Ice Cream</div>
+                    <input type="number" class="item-input item-price" value="3.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Rasmalai</div>
+                    <input type="number" class="item-input item-price" value="3.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Gajar Ka Halwa</div>
+                    <input type="number" class="item-input item-price" value="3.00" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Hyderabadi Sheer Khurma</div>
+                    <input type="number" class="item-input item-price" value="3.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Jalebi</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Drinks -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🥤 Drinks</div>
+                <div class="section-total" id="drinksTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Water Melon Refresher</div>
+                    <input type="number" class="item-input item-price" value="3.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Spicy Guava</div>
+                    <input type="number" class="item-input item-price" value="3.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Mango Mule</div>
+                    <input type="number" class="item-input item-price" value="4.00" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Cucumber-Mint Cooler</div>
+                    <input type="number" class="item-input item-price" value="3.00" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Lime-Mint Cooler</div>
+                    <input type="number" class="item-input item-price" value="3.00" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Nimboo Soda</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ice Creams -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🍦 Ice Creams</div>
+                <div class="section-total" id="iceCreamsTotal">$0.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Vanilla</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chocolate</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Strawberry</div>
+                    <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Services -->
+        <div class="card menu-section">
+            <div class="section-header">
+                <div class="section-title">🚚 Additional Services</div>
+                <div class="section-total" id="additionalServicesTotal">$200.00</div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-name">Delivery & Setup</div>
+                    <input type="number" class="item-input item-price" value="200" step="1" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="1" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$200.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chef Fee</div>
+                    <input type="number" class="item-input item-price" value="200" step="1" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Chef Fee (Discounted)</div>
+                    <input type="number" class="item-input item-price" value="100" step="1" onchange="calculateTotals()">
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="item-total">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="card summary-card">
+            <div class="summary-title">💰 Pricing Breakdown</div>
+            <div class="summary-row" style="background: #e3f2fd; padding: 15px; margin-bottom: 10px; border-radius: 8px; border-left: 4px solid #2196F3;">
+                <span><strong>📊 <span id="pricingTierDescription">Premium Event Pricing (Base Rate)</span></strong></span>
+                <span><strong id="pricingMultiplierDisplay">1.0x</strong></span>
+            </div>
+            <div style="background: #f8f9fa; padding: 10px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #e9ecef;">
+                <span style="font-size: 13px; color: #666;">💡 <strong>New Feature:</strong> Select "Per Person" or "Tray" pricing for applicable items</span>
+            </div>
+            <div class="summary-row">
+                <span><strong>Catering Total ($<span id="perPersonRate">0.00</span> × <span id="guestCountDisplay">50</span>)</strong></span>
+                <span><strong id="cateringTotal">$0.00</strong></span>
+            </div>
+            <div class="summary-row" style="padding-left: 20px; font-style: italic; color: #666;">
+                <span>+ Tray Items Total</span>
+                <span id="trayTotal">$0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery & Setup</span>
+                <span id="deliverySetup">$200.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Chef Fee</span>
+                <span id="chefFee">$0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Taxes @ <span id="taxPercent">7.75</span>%</span>
+                <span id="taxAmount">$15.50</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span id="grandTotal">$215.50</span>
+            </div>
+            <div class="summary-row highlight">
+                <span>Cash Discount @ <span id="cashDiscountPercent">3</span>%</span>
+                <span id="cashDiscountAmount">($8.16)</span>
+            </div>
+            <div class="summary-row highlight">
+                <span>Service & Labour (<span id="staffCountDisplay">7</span> staff × <span id="hoursDisplay">8</span> hrs × $<span id="rateDisplay">30</span>/hr)</span>
+                <span id="labourTotal">$1,680.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Advance Paid</span>
+                <span id="advancePaidDisplay">($0.00)</span>
+            </div>
+            <div class="balance-section">
+                <div class="summary-row" style="border: none; font-weight: bold; font-size: 18px;">
+                    <span>Balance Cash (with 5% cash discount)</span>
+                    <span id="balanceCash">$1,855.04</span>
+                </div>
+                <div class="summary-row" style="border: none; font-weight: bold; font-size: 18px;">
+                    <span>Balance Check (no cash discount)</span>
+                    <span id="balanceCheck">$1,943.72</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Terms -->
+        <div class="card">
+            <div class="payment-terms">
+                <div class="terms-title">📋 PAYMENT TERMS</div>
+                <p><strong>A 50% deposit is required to book the date.</strong> Balance 50% to be received 2 weeks prior to the event date.</p>
+                <p><strong>A 5% discount is offered on all cash payments.</strong></p>
+                
+                <div class="terms-title" style="margin-top: 25px;">📝 NOTE</div>
+                <p>Guest count is approximate and may increase or decrease.</p>
+                <p>Final pricing will be adjusted based on actual guest count and menu selections.</p>
+                <p>Custom menu requests are welcome and will be quoted separately.</p>
+            </div>
+        </div>
+
+        <!-- Export Options -->
+        <div class="card">
+            <div class="export-panel">
+                <h3 style="color: #8B4513; margin-bottom: 20px;">📊 Export Your Quote</h3>
+                <button class="export-btn" onclick="exportToCSV()">📄 CSV Export</button>
+                <button class="export-btn" onclick="exportToJSON()">📋 JSON Export</button>
+                <button class="export-btn" onclick="generateTextQuote()">📝 Text Quote</button>
+                <button class="export-btn pdf" onclick="generatePDF()">🎨 PDF Quote</button>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="card">
+            <div style="background: linear-gradient(135deg, #8B4513, #D2691E); color: #FFD700; padding: 30px; text-align: center;">
+                <h3 style="margin-bottom: 20px; font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">📞 Contact Us</h3>
+                <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.2rem;">📱</span>
+                        <span style="font-size: 1.1rem; font-weight: bold;">+1 (510) 331-1812</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.2rem;">📞</span>
+                        <span style="font-size: 1.1rem; font-weight: bold;">+1 (571) 440-7784</span>
+                    </div>
+                </div>
+                <p style="margin-top: 20px; font-style: italic; font-size: 1.1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+                    "For All Events & Celebrations"
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to get pricing multiplier based on guest count
+        function getPricingMultiplier(guestCount) {
+            if (guestCount < 35) {
+                return 1.4; // 40% increase for small events
+            } else if (guestCount >= 35 && guestCount <= 70) {
+                return 1.2; // 20% increase for medium events
+            } else if (guestCount >= 71 && guestCount <= 120) {
+                return 1.1; // 10% increase for larger events
+            } else {
+                return 1.0; // Base price for 120+ guests
+            }
+        }
+
+        // Function to get pricing tier description
+        function getPricingTierDescription(guestCount) {
+            if (guestCount < 35) {
+                return "Small Event Pricing (+40%)";
+            } else if (guestCount >= 35 && guestCount <= 70) {
+                return "Medium Event Pricing (+20%)";
+            } else if (guestCount >= 71 && guestCount <= 120) {
+                return "Large Event Pricing (+10%)";
+            } else {
+                return "Premium Event Pricing (Base Rate)";
+            }
+        }
+
+        function togglePricingType(radio) {
+            var menuItem = radio.closest('.menu-item');
+            var pricingSelector = menuItem.querySelector('.pricing-selector');
+            var perPersonPricing = pricingSelector.querySelector('.per-person-pricing');
+            var traySelector = pricingSelector.querySelector('.tray-selector');
+            
+            if (radio.value === 'tray') {
+                perPersonPricing.style.display = 'none';
+                traySelector.classList.add('active');
+            } else {
+                perPersonPricing.style.display = 'block';
+                traySelector.classList.remove('active');
+                // Reset tray selection
+                traySelector.querySelector('select').value = '0';
+            }
+            
+            calculateTotals();
+        }
+
+        function calculateTotals() {
+            // Get input values
+            var guestCount = parseInt(document.getElementById('guestCount').value) || 0;
+            var taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            var cashDiscount = parseFloat(document.getElementById('cashDiscount').value) || 0;
+            var staffCount = parseInt(document.getElementById('staffCount').value) || 0;
+            var hoursPerStaff = parseInt(document.getElementById('hoursPerStaff').value) || 0;
+            var hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+            var advancePaid = parseFloat(document.getElementById('advancePaid').value) || 0;
+
+            // Get pricing multiplier for this guest count
+            var pricingMultiplier = getPricingMultiplier(guestCount);
+
+            // Update display elements
+            document.getElementById('guestCountDisplay').textContent = guestCount;
+            document.getElementById('taxPercent').textContent = taxRate;
+            document.getElementById('cashDiscountPercent').textContent = cashDiscount;
+            document.getElementById('staffCountDisplay').textContent = staffCount;
+            document.getElementById('hoursDisplay').textContent = hoursPerStaff;
+            document.getElementById('rateDisplay').textContent = hourlyRate;
+            document.getElementById('pricingTierDescription').textContent = getPricingTierDescription(guestCount);
+            document.getElementById('pricingMultiplierDisplay').textContent = pricingMultiplier.toFixed(1) + 'x';
+
+            // Calculate menu totals - unified calculation
+            var menuSections = ['liveStations', 'indoChinese', 'vegAppetizers', 'nonVegAppetizers', 'biryanis', 'breads', 'vegEntrees', 'ricePulao', 'nonVegEntrees', 'onTheGrill', 'desserts', 'drinks', 'iceCreams', 'additionalServices'];
+            var perPersonMenuCost = 0;
+            var trayCost = 0;
+            var deliverySetup = 0;
+            var chefFee = 0;
+
+            menuSections.forEach(function(sectionName) {
+                var sectionElement = document.getElementById(sectionName + 'Total');
+                if (!sectionElement) return;
+                
+                var section = sectionElement.closest('.menu-section');
+                var items = section.querySelectorAll('.menu-item');
+                var sectionTotal = 0;
+
+                items.forEach(function(item) {
+                    var quantity = parseInt(item.querySelector('.item-quantity').value) || 0;
+                    var itemName = item.querySelector('.item-name').textContent;
+                    var itemTotal = 0;
+                    var displayTotal = 0;
+                    
+                    if (quantity > 0) {
+                        // Check if item has dual pricing (per-person and tray)
+                        var pricingSelector = item.querySelector('.pricing-selector');
+                        if (pricingSelector) {
+                            var pricingTypeRadio = pricingSelector.querySelector('input[type="radio"]:checked');
+                            
+                            if (pricingTypeRadio.value === 'tray') {
+                                // Tray pricing - fixed cost per tray
+                                var traySelect = pricingSelector.querySelector('.tray-selector select');
+                                var trayPrice = parseFloat(traySelect.value) || 0;
+                                itemTotal = trayPrice * quantity;
+                                displayTotal = itemTotal;
+                                
+                                // Add to tray cost for grand total (only food items)
+                                if (sectionName !== 'additionalServices') {
+                                    trayCost += itemTotal;
+                                }
+                            } else {
+                                // Per-person pricing
+                                var basePrice = parseFloat(item.querySelector('.item-price').value) || 0;
+                                var adjustedPrice = basePrice;
+                                if (sectionName !== 'additionalServices') {
+                                    adjustedPrice = basePrice * pricingMultiplier;
+                                }
+                                itemTotal = adjustedPrice * quantity;
+                                displayTotal = itemTotal * guestCount;
+                                
+                                // Add to per-person cost for grand total (only food items)
+                                if (sectionName !== 'additionalServices') {
+                                    perPersonMenuCost += itemTotal;
+                                }
+                            }
+                        } else {
+                            // Legacy items with per-person pricing only
+                            var basePrice = parseFloat(item.querySelector('.item-price').value) || 0;
+                            var adjustedPrice = basePrice;
+                            if (sectionName !== 'additionalServices') {
+                                adjustedPrice = basePrice * pricingMultiplier;
+                            }
+                            itemTotal = adjustedPrice * quantity;
+                            
+                            // Check if this is a service item (delivery, chef, etc.) that should be fixed cost
+                            if (sectionName === 'additionalServices' || itemName.indexOf('Delivery') !== -1 || itemName.indexOf('Chef') !== -1) {
+                                displayTotal = itemTotal; // Fixed cost, don't multiply by guest count
+                            } else {
+                                displayTotal = itemTotal * guestCount; // Per-person item
+                                perPersonMenuCost += itemTotal; // Add to per-person cost for grand total
+                            }
+                        }
+                        
+                        // Track specific items for summary
+                        if (itemName.indexOf('Delivery') !== -1) {
+                            deliverySetup += displayTotal;
+                        } else if (itemName.indexOf('Chef') !== -1) {
+                            chefFee += displayTotal;
+                        }
+                    }
+                    
+                    item.querySelector('.item-total').textContent = '$' + displayTotal.toFixed(2);
+                    sectionTotal += displayTotal;
+                });
+
+                sectionElement.textContent = '$' + sectionTotal.toFixed(2);
+            });
+
+            // Calculate final totals
+            var perPersonRate = perPersonMenuCost;
+            var cateringTotal = (perPersonMenuCost * guestCount) + trayCost;
+            var subtotalBeforeTax = cateringTotal + deliverySetup + chefFee;
+            var taxAmount = subtotalBeforeTax * (taxRate / 100);
+            var grandTotal = subtotalBeforeTax + taxAmount;
+            var cashDiscountAmount = grandTotal * (cashDiscount / 100);
+            var labourCost = staffCount * hoursPerStaff * hourlyRate;
+            
+            var totalAfterDiscount = grandTotal - cashDiscountAmount;
+            var finalTotal = totalAfterDiscount + labourCost - advancePaid;
+            var balanceCash = finalTotal * 0.95; // Additional 5% cash discount
+            var balanceCheck = finalTotal;
+
+            // Update summary display
+            document.getElementById('perPersonRate').textContent = perPersonRate.toFixed(2);
+            document.getElementById('cateringTotal').textContent = '$' + cateringTotal.toFixed(2);
+            document.getElementById('trayTotal').textContent = '$' + trayCost.toFixed(2);
+            document.getElementById('deliverySetup').textContent = '$' + deliverySetup.toFixed(2);
+            document.getElementById('chefFee').textContent = '$' + chefFee.toFixed(2);
+            document.getElementById('taxAmount').textContent = '$' + taxAmount.toFixed(2);
+            document.getElementById('grandTotal').textContent = '$' + grandTotal.toFixed(2);
+            document.getElementById('cashDiscountAmount').textContent = '($' + cashDiscountAmount.toFixed(2) + ')';
+            document.getElementById('labourTotal').textContent = '$' + labourCost.toFixed(2);
+            document.getElementById('advancePaidDisplay').textContent = '($' + advancePaid.toFixed(2) + ')';
+            document.getElementById('balanceCash').textContent = '$' + balanceCash.toFixed(2);
+            document.getElementById('balanceCheck').textContent = '$' + balanceCheck.toFixed(2);
+        }
+
+        function collectData() {
+            var guestCount = parseInt(document.getElementById('guestCount').value) || 0;
+            var pricingMultiplier = getPricingMultiplier(guestCount);
+            
+            var data = {
+                eventDetails: {
+                    clientName: document.getElementById('clientName').value,
+                    eventType: document.getElementById('eventType').value,
+                    eventDate: document.getElementById('eventDate').value,
+                    guestCount: document.getElementById('guestCountDisplay').textContent
+                },
+                pricingTier: {
+                    description: getPricingTierDescription(guestCount),
+                    multiplier: pricingMultiplier
+                },
+                summary: {
+                    perPersonRate: document.getElementById('perPersonRate').textContent,
+                    cateringTotal: document.getElementById('cateringTotal').textContent,
+                    trayTotal: document.getElementById('trayTotal').textContent,
+                    deliverySetup: document.getElementById('deliverySetup').textContent,
+                    chefFee: document.getElementById('chefFee').textContent,
+                    taxPercent: document.getElementById('taxPercent').textContent,
+                    taxAmount: document.getElementById('taxAmount').textContent,
+                    grandTotal: document.getElementById('grandTotal').textContent,
+                    cashDiscountPercent: document.getElementById('cashDiscountPercent').textContent,
+                    cashDiscountAmount: document.getElementById('cashDiscountAmount').textContent,
+                    labourTotal: document.getElementById('labourTotal').textContent,
+                    advancePaid: document.getElementById('advancePaidDisplay').textContent,
+                    balanceCash: document.getElementById('balanceCash').textContent,
+                    balanceCheck: document.getElementById('balanceCheck').textContent
+                },
+                items: []
+            };
+
+            // Collect selected items
+            var menuSections = document.querySelectorAll('.menu-section');
+            menuSections.forEach(function(section) {
+                var sectionTitle = section.querySelector('.section-title').textContent;
+                var items = section.querySelectorAll('.menu-item');
+                
+                items.forEach(function(item) {
+                    var quantity = parseInt(item.querySelector('.item-quantity').value) || 0;
+                    if (quantity > 0) {
+                        var basePrice = parseFloat(item.querySelector('.item-price').value) || 0;
+                        var guestCount = parseInt(document.getElementById('guestCount').value) || 0;
+                        var pricingMultiplier = getPricingMultiplier(guestCount);
+                        var adjustedPrice = sectionTitle.indexOf('Additional Services') === -1 ? basePrice * pricingMultiplier : basePrice;
+                        
+                        data.items.push({
+                            category: sectionTitle,
+                            name: item.querySelector('.item-name').textContent,
+                            basePrice: basePrice,
+                            adjustedPrice: adjustedPrice,
+                            quantity: quantity,
+                            total: parseFloat(item.querySelector('.item-total').textContent.replace('$', ''))
+                        });
+                    }
+                });
+            });
+
+            return data;
+        }
+
+        function exportToCSV() {
+            var data = collectData();
+            var csv = 'Event Details\n';
+            csv += 'Client,' + (data.eventDetails.clientName || 'Not specified') + '\n';
+            csv += 'Event Type,' + (data.eventDetails.eventType || 'Not specified') + '\n';
+            csv += 'Event Date,' + (data.eventDetails.eventDate || 'Not specified') + '\n';
+            csv += 'Guest Count,' + data.eventDetails.guestCount + '\n';
+            csv += 'Pricing Tier,' + data.pricingTier.description + '\n';
+            csv += 'Price Multiplier,' + data.pricingTier.multiplier + 'x\n\n';
+            
+            csv += 'Menu Items\n';
+            csv += 'Category,Item,Base Price,Adjusted Price,Quantity,Total\n';
+            
+            data.items.forEach(function(item) {
+                csv += '"' + item.category + '","' + item.name + '",' + item.basePrice + ',' + item.adjustedPrice + ',' + item.quantity + ',' + item.total + '\n';
+            });
+
+            downloadFile(csv, 'spice-gully-quote.csv', 'text/csv');
+        }
+
+        function exportToJSON() {
+            var data = collectData();
+            downloadFile(JSON.stringify(data, null, 2), 'spice-gully-quote.json', 'application/json');
+        }
+
+        function generateTextQuote() {
+            var data = collectData();
+            var quote = 'SPICE GULLY CATERING - PRICING QUOTE\n';
+            quote += '==========================================\n\n';
+            quote += 'Client: ' + (data.eventDetails.clientName || 'Not specified') + '\n';
+            quote += 'Event: ' + (data.eventDetails.eventType || 'Not specified') + '\n';
+            quote += 'Date: ' + (data.eventDetails.eventDate || 'Not specified') + '\n';
+            quote += 'Guests: ' + data.eventDetails.guestCount + '\n';
+            quote += 'Pricing Tier: ' + data.pricingTier.description + '\n';
+            quote += 'Price Multiplier: ' + data.pricingTier.multiplier + 'x\n\n';
+            
+            quote += 'PRICING BREAKDOWN:\n';
+            quote += 'Catering Total: ' + data.summary.cateringTotal + '\n';
+            quote += '  + Tray Items: ' + data.summary.trayTotal + '\n';
+            quote += 'Delivery & Setup: ' + data.summary.deliverySetup + '\n';
+            quote += 'Chef Fee: ' + data.summary.chefFee + '\n';
+            quote += 'Taxes: ' + data.summary.taxAmount + '\n';
+            quote += 'Total: ' + data.summary.grandTotal + '\n';
+            quote += 'Labour: ' + data.summary.labourTotal + '\n';
+            quote += 'Balance Cash: ' + data.summary.balanceCash + '\n';
+            quote += 'Balance Check: ' + data.summary.balanceCheck + '\n\n';
+            quote += 'Contact: +1 (510) 331-1812 / +1 (571) 440-7784';
+
+            downloadFile(quote, 'spice-gully-quote.txt', 'text/plain');
+        }
+
+        function generatePDF() {
+            var data = collectData();
+            var pdfWindow = window.open('', '_blank');
+            
+            var content = '<!DOCTYPE html><html><head><title>Spice Gully Catering Quote</title>';
+            content += '<style>body{font-family:Arial;margin:20px;color:#333}';
+            content += '.header{text-align:center;border-bottom:3px solid #8B4513;padding:20px;margin-bottom:30px}';
+            content += '.company-name{font-size:28px;font-weight:bold;color:#8B4513;margin-bottom:10px}';
+            content += '.tagline{font-size:18px;color:#D2691E;font-style:italic}';
+            content += '.contact{font-size:14px;color:#666;margin-top:10px}';
+            content += '.event-info{background:#f8f4e6;padding:20px;margin-bottom:30px;border-left:5px solid #D2691E}';
+            content += '.menu-section{margin:20px 0}';
+            content += '.category{background:#8B4513;color:white;padding:15px;font-weight:bold;font-size:18px}';
+            content += '.item{display:flex;justify-content:space-between;padding:10px 20px;border-bottom:1px solid #eee}';
+            content += '.pricing{background:#fff;border:2px solid #8B4513;padding:25px;margin-top:30px}';
+            content += '.price-line{display:flex;justify-content:space-between;padding:8px 0;font-size:16px}';
+            content += '.total{font-weight:bold;font-size:18px;border-top:2px solid #8B4513;padding-top:15px;margin-top:15px}';
+            content += '.balance{background:#f8f4e6;padding:15px;margin:10px 0;font-weight:bold}';
+            content += '@media print{.no-print{display:none}}';
+            content += '</style></head><body>';
+            
+            content += '<div class="header">';
+            content += '<div class="company-name">SPICE GULLY CATERING SERVICES</div>';
+            content += '<div class="tagline">Authentic Indian Food - Live Catering</div>';
+            content += '<div class="contact">Tel: +1 (510) 331-1812 / +1 (571) 440-7784</div>';
+            content += '</div>';
+            
+            content += '<div class="event-info">';
+            content += '<strong>' + (data.eventDetails.eventDate || 'Event Date') + ' - ' + (data.eventDetails.eventType || 'Event') + ' (' + data.eventDetails.guestCount + ' guests)</strong>';
+            if (data.eventDetails.clientName) content += '<br>Client: ' + data.eventDetails.clientName;
+            content += '<br><strong>Pricing Tier:</strong> ' + data.pricingTier.description + ' (' + data.pricingTier.multiplier + 'x)';
+            content += '</div>';
+            
+            // Group items by category
+            var categories = {};
+            data.items.forEach(function(item) {
+                if (!categories[item.category]) categories[item.category] = [];
+                categories[item.category].push(item);
+            });
+            
+            for (var category in categories) {
+                var categoryTotal = categories[category].reduce(function(sum, item) { return sum + item.total; }, 0);
+                content += '<div class="menu-section">';
+                content += '<div class="category">' + category + ' ($' + categoryTotal.toFixed(2) + ')</div>';
+                categories[category].forEach(function(item) {
+                    content += '<div class="item"><span>' + item.name + ' - $' + item.price + '</span><span>$' + item.total.toFixed(2) + '</span></div>';
+                });
+                content += '</div>';
+            }
+            
+            content += '<div class="pricing">';
+            content += '<div class="price-line"><span>Catering Total ($' + data.summary.perPersonRate + ' × ' + data.eventDetails.guestCount + ')</span><span>' + data.summary.cateringTotal + '</span></div>';
+            if (data.summary.trayTotal !== '$0.00') content += '<div class="price-line" style="padding-left:20px;font-style:italic;color:#666;"><span>+ Tray Items Total</span><span>' + data.summary.trayTotal + '</span></div>';
+            content += '<div class="price-line"><span>Delivery & Setup</span><span>' + data.summary.deliverySetup + '</span></div>';
+            if (data.summary.chefFee !== '$0.00') content += '<div class="price-line"><span>Chef Fee</span><span>' + data.summary.chefFee + '</span></div>';
+            content += '<div class="price-line"><span>Taxes @ ' + data.summary.taxPercent + '%</span><span>' + data.summary.taxAmount + '</span></div>';
+            content += '<div class="price-line total"><span>Total</span><span>' + data.summary.grandTotal + '</span></div>';
+            content += '<div class="price-line"><span>Cash Discount @ ' + data.summary.cashDiscountPercent + '%</span><span>' + data.summary.cashDiscountAmount + '</span></div>';
+            content += '<div class="price-line"><span>Service & Labour</span><span>' + data.summary.labourTotal + '</span></div>';
+            content += '<div class="price-line"><span>Advance Paid</span><span>' + data.summary.advancePaid + '</span></div>';
+            content += '<div class="balance"><div class="price-line"><span>Balance Cash</span><span>' + data.summary.balanceCash + '</span></div></div>';
+            content += '<div class="balance"><div class="price-line"><span>Balance Check</span><span>' + data.summary.balanceCheck + '</span></div></div>';
+            content += '</div>';
+            
+            content += '<div style="margin-top:30px;font-size:14px">';
+            content += '<strong>PAYMENT TERMS:</strong><br>A 50% deposit is required to book the date. Balance 50% to be received 2 weeks prior to the event date. A 5% discount is offered on all cash payments.<br><br>';
+            content += '<strong>NOTE:</strong><br>Guest count is approximate and may increase or decrease.';
+            content += '</div>';
+            
+            content += '<div class="no-print" style="text-align:center;margin-top:30px">';
+            content += '<button onclick="window.print()" style="background:#8B4513;color:white;padding:15px 30px;border:none;border-radius:5px;font-size:16px;cursor:pointer">Print PDF</button>';
+            content += '<button onclick="window.close()" style="background:#666;color:white;padding:15px 30px;border:none;border-radius:5px;font-size:16px;cursor:pointer;margin-left:10px">Close</button>';
+            content += '</div></body></html>';
+            
+            pdfWindow.document.write(content);
+            pdfWindow.document.close();
+        }
+
+        function downloadFile(content, filename, contentType) {
+            var blob = new Blob([content], { type: contentType });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Initialize
+        calculateTotals();
+    </script>
+</body>
+</html>
