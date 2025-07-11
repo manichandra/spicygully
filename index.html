@@ -1373,51 +1373,148 @@
             </div>
             <div class="menu-items">
                 <div class="menu-item">
-                    <div class="item-name">Hyderabadi Dum Biryani (Veg/Chicken/Goat)</div>
+                    <div class="item-name">Hyderabadi Dum Biryani (Veg)</div>
                     <div class="pricing-selector">
                         <div class="pricing-type">
-                            <input type="radio" name="hyderabadiBiryani_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <input type="radio" name="hyderabadiBiryaniVeg_pricing" value="person" checked onchange="togglePricingType(this)">
                             <label>Per Person</label>
-                            <input type="radio" name="hyderabadiBiryani_pricing" value="tray" onchange="togglePricingType(this)">
+                            <input type="radio" name="hyderabadiBiryaniVeg_pricing" value="tray" onchange="togglePricingType(this)">
                             <label>Tray</label>
                         </div>
                         <div class="per-person-pricing">
-                            <input type="number" class="item-input item-price" value="7.50" step="0.01" onchange="calculateTotals()">
+                            <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="55">Small Tray ($55)</option>
+                                <option value="80">Half Tray ($80)</option>
+                                <option value="120">Large Tray ($120)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="quantity-controls">
+                        <button type="button" class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                        <div class="quantity-display">0</div>
+                        <button type="button" class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Hyderabadi Dum Biryani (Chicken)</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="hyderabadiBiryaniChicken_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="hyderabadiBiryaniChicken_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="3.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="65">Small Tray ($65)</option>
+                                <option value="95">Half Tray ($95)</option>
+                                <option value="145">Large Tray ($145)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="quantity-controls">
+                        <button type="button" class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                        <div class="quantity-display">0</div>
+                        <button type="button" class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Hyderabadi Dum Biryani (Goat)</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="hyderabadiBiryaniGoat_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="hyderabadiBiryaniGoat_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="3.50" step="0.01" onchange="calculateTotals()">
                         </div>
                         <div class="tray-selector">
                             <select class="tray-input" onchange="calculateTotals()">
                                 <option value="0">Select Tray</option>
                                 <option value="75">Small Tray ($75)</option>
-                                <option value="115">Half Tray ($115)</option>
+                                <option value="110">Half Tray ($110)</option>
                                 <option value="165">Large Tray ($165)</option>
                             </select>
                         </div>
                     </div>
                     <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="quantity-controls">
+                        <button type="button" class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                        <div class="quantity-display">0</div>
+                        <button type="button" class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
                     <div class="item-total">$0.00</div>
                 </div>
                 <div class="menu-item">
-                    <div class="item-name">Thalapakattu Biryani (Chicken/Goat)</div>
+                    <div class="item-name">Thalapakattu Biryani (Chicken)</div>
                     <div class="pricing-selector">
                         <div class="pricing-type">
-                            <input type="radio" name="thalapakattuBiryani_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <input type="radio" name="thalapakattuBiryaniChicken_pricing" value="person" checked onchange="togglePricingType(this)">
                             <label>Per Person</label>
-                            <input type="radio" name="thalapakattuBiryani_pricing" value="tray" onchange="togglePricingType(this)">
+                            <input type="radio" name="thalapakattuBiryaniChicken_pricing" value="tray" onchange="togglePricingType(this)">
                             <label>Tray</label>
                         </div>
                         <div class="per-person-pricing">
-                            <input type="number" class="item-input item-price" value="8.00" step="0.01" onchange="calculateTotals()">
+                            <input type="number" class="item-input item-price" value="3.00" step="0.01" onchange="calculateTotals()">
                         </div>
                         <div class="tray-selector">
                             <select class="tray-input" onchange="calculateTotals()">
                                 <option value="0">Select Tray</option>
-                                <option value="80">Small Tray ($80)</option>
-                                <option value="120">Half Tray ($120)</option>
-                                <option value="175">Large Tray ($175)</option>
+                                <option value="75">Small Tray ($75)</option>
+                                <option value="110">Half Tray ($110)</option>
+                                <option value="145">Large Tray ($145)</option>
                             </select>
                         </div>
                     </div>
                     <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="quantity-controls">
+                        <button type="button" class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                        <div class="quantity-display">0</div>
+                        <button type="button" class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                    <div class="item-total">$0.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Thalapakattu Biryani (Goat)</div>
+                    <div class="pricing-selector">
+                        <div class="pricing-type">
+                            <input type="radio" name="thalapakattuBiryaniGoat_pricing" value="person" checked onchange="togglePricingType(this)">
+                            <label>Per Person</label>
+                            <input type="radio" name="thalapakattuBiryaniGoat_pricing" value="tray" onchange="togglePricingType(this)">
+                            <label>Tray</label>
+                        </div>
+                        <div class="per-person-pricing">
+                            <input type="number" class="item-input item-price" value="3.50" step="0.01" onchange="calculateTotals()">
+                        </div>
+                        <div class="tray-selector">
+                            <select class="tray-input" onchange="calculateTotals()">
+                                <option value="0">Select Tray</option>
+                                <option value="85">Small Tray ($85)</option>
+                                <option value="125">Half Tray ($125)</option>
+                                <option value="165">Large Tray ($165)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="number" class="item-input item-quantity" value="0" min="0" onchange="calculateTotals()">
+                    <div class="quantity-controls">
+                        <button type="button" class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                        <div class="quantity-display">0</div>
+                        <button type="button" class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
                     <div class="item-total">$0.00</div>
                 </div>
             </div>
@@ -1480,14 +1577,14 @@
                             <label>Tray</label>
                         </div>
                         <div class="per-person-pricing">
-                            <input type="number" class="item-input item-price" value="8.00" step="0.01" onchange="calculateTotals()">
+                            <input type="number" class="item-input item-price" value="2.25" step="0.01" onchange="calculateTotals()">
                         </div>
                         <div class="tray-selector">
                             <select class="tray-input" onchange="calculateTotals()">
                                 <option value="0">Select Tray</option>
-                                <option value="80">Small Tray ($80)</option>
-                                <option value="120">Half Tray ($120)</option>
-                                <option value="175">Large Tray ($175)</option>
+                                <option value="45">Small Tray ($45)</option>
+                                <option value="65">Half Tray ($65)</option>
+                                <option value="95">Large Tray ($95)</option>
                             </select>
                         </div>
                     </div>
@@ -1504,14 +1601,14 @@
                             <label>Tray</label>
                         </div>
                         <div class="per-person-pricing">
-                            <input type="number" class="item-input item-price" value="9.50" step="0.01" onchange="calculateTotals()">
+                            <input type="number" class="item-input item-price" value="2.75" step="0.01" onchange="calculateTotals()">
                         </div>
                         <div class="tray-selector">
                             <select class="tray-input" onchange="calculateTotals()">
                                 <option value="0">Select Tray</option>
-                                <option value="95">Small Tray ($95)</option>
-                                <option value="145">Half Tray ($145)</option>
-                                <option value="210">Large Tray ($210)</option>
+                                <option value="55">Small Tray ($55)</option>
+                                <option value="80">Half Tray ($80)</option>
+                                <option value="120">Large Tray ($120)</option>
                             </select>
                         </div>
                     </div>
@@ -1528,14 +1625,14 @@
                             <label>Tray</label>
                         </div>
                         <div class="per-person-pricing">
-                            <input type="number" class="item-input item-price" value="8.50" step="0.01" onchange="calculateTotals()">
+                            <input type="number" class="item-input item-price" value="2.50" step="0.01" onchange="calculateTotals()">
                         </div>
                         <div class="tray-selector">
                             <select class="tray-input" onchange="calculateTotals()">
                                 <option value="0">Select Tray</option>
-                                <option value="85">Small Tray ($85)</option>
-                                <option value="130">Half Tray ($130)</option>
-                                <option value="185">Large Tray ($185)</option>
+                                <option value="50">Small Tray ($50)</option>
+                                <option value="75">Half Tray ($75)</option>
+                                <option value="110">Large Tray ($110)</option>
                             </select>
                         </div>
                     </div>
@@ -1552,14 +1649,14 @@
                             <label>Tray</label>
                         </div>
                         <div class="per-person-pricing">
-                            <input type="number" class="item-input item-price" value="7.50" step="0.01" onchange="calculateTotals()">
+                            <input type="number" class="item-input item-price" value="2.00" step="0.01" onchange="calculateTotals()">
                         </div>
                         <div class="tray-selector">
                             <select class="tray-input" onchange="calculateTotals()">
                                 <option value="0">Select Tray</option>
-                                <option value="75">Small Tray ($75)</option>
-                                <option value="115">Half Tray ($115)</option>
-                                <option value="165">Large Tray ($165)</option>
+                                <option value="40">Small Tray ($40)</option>
+                                <option value="60">Half Tray ($60)</option>
+                                <option value="90">Large Tray ($90)</option>
                             </select>
                         </div>
                     </div>
@@ -1576,14 +1673,14 @@
                             <label>Tray</label>
                         </div>
                         <div class="per-person-pricing">
-                            <input type="number" class="item-input item-price" value="7.00" step="0.01" onchange="calculateTotals()">
+                            <input type="number" class="item-input item-price" value="1.75" step="0.01" onchange="calculateTotals()">
                         </div>
                         <div class="tray-selector">
                             <select class="tray-input" onchange="calculateTotals()">
                                 <option value="0">Select Tray</option>
-                                <option value="70">Small Tray ($70)</option>
-                                <option value="105">Half Tray ($105)</option>
-                                <option value="155">Large Tray ($155)</option>
+                                <option value="35">Small Tray ($35)</option>
+                                <option value="55">Half Tray ($55)</option>
+                                <option value="85">Large Tray ($85)</option>
                             </select>
                         </div>
                     </div>
